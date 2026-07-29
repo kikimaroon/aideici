@@ -221,6 +221,60 @@ function AlertForm() {
   );
 }
 
+// ── Scroll Reveal Hook ───────────────────────────────────────────────
+function useReveal() {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+    );
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+}
+
+// ── Skeleton ─────────────────────────────────────────────────────────
+function SkeletonCard() {
+  return (
+    <div className="border border-border bg-card rounded-sm p-6 sm:p-7">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="skeleton h-5 w-16 rounded-sm" />
+        <div className="skeleton h-4 w-20 rounded-sm" />
+      </div>
+      <div className="skeleton h-6 w-3/4 rounded-sm mb-2" />
+      <div className="skeleton h-4 w-full rounded-sm mb-1" />
+      <div className="skeleton h-4 w-2/3 rounded-sm mb-3" />
+      <div className="flex gap-3 mt-3">
+        <div className="skeleton h-3 w-24 rounded-sm" />
+        <div className="skeleton h-3 w-32 rounded-sm" />
+      </div>
+    </div>
+  );
+}
+
+function SkeletonSidebar() {
+  return (
+    <aside className="self-start border border-border bg-card rounded-sm">
+      <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-3.5">
+        <div className="skeleton h-3 w-40 rounded-sm" />
+        <div className="skeleton h-3 w-12 rounded-sm" />
+      </div>
+      {[1, 2, 3].map((i) => (
+        <div key={i} className="px-5 py-3.5 border-b border-border">
+          <div className="skeleton h-4 w-5/6 rounded-sm mb-1" />
+          <div className="skeleton h-3 w-1/2 rounded-sm" />
+        </div>
+      ))}
+    </aside>
+  );
+}
+
 // ── Need Card ───────────────────────────────────────────────────────
 function NeedCard({ need }: { need: Need }) {
   return (
@@ -308,6 +362,8 @@ export default function HomePage() {
   const urgentNeeds = needs.filter((n) => n.title.toUpperCase().startsWith("URGENT"));
   const regularNeeds = needs.filter((n) => !n.title.toUpperCase().startsWith("URGENT"));
   const compactNeeds = regularNeeds.slice(0, 3);
+
+  useReveal();
 
   return (
     <div id="top" className="min-h-screen bg-background">
@@ -400,54 +456,54 @@ export default function HomePage() {
             </div>
 
             {/* Sidebar compact */}
-            <aside className="self-start border border-border bg-card rounded-sm">
-              <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-3.5">
-                <span className="flex items-center gap-2 text-[10.5px] font-bold uppercase tracking-[0.13em] text-foreground">
-                  <span className="h-[6px] w-[6px] rounded-[1px] bg-primary" />
-                  Besoins actifs aujourd&apos;hui
-                </span>
-                <span className="shrink-0 text-[11px] tabular-nums text-muted-foreground">
-                  {compactNeeds.length} / {needs.length}
-                </span>
-              </div>
+            {loading ? (
+              <SkeletonSidebar />
+            ) : (
+              <aside className="self-start border border-border bg-card rounded-sm">
+                <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-3.5">
+                  <span className="flex items-center gap-2 text-[10.5px] font-bold uppercase tracking-[0.13em] text-foreground">
+                    <span className="h-[6px] w-[6px] rounded-[1px] bg-primary" />
+                    Besoins actifs aujourd&apos;hui
+                  </span>
+                  <span className="shrink-0 text-[11px] tabular-nums text-muted-foreground">
+                    {compactNeeds.length} / {regularNeeds.length}
+                  </span>
+                </div>
 
-              {loading ? (
-                <p className="px-5 py-3.5 text-[13px] text-muted-foreground">
-                  Chargement…
-                </p>
-              ) : compactNeeds.length === 0 ? (
-                <p className="px-5 py-3.5 text-[13px] text-muted-foreground">
-                  Aucun besoin pour le moment.
-                </p>
-              ) : (
-                <ul className="divide-y divide-border">
-                  {compactNeeds.map((need) => (
-                    <li key={need.id} className="px-5 py-3.5">
-                      <a
-                        href={need.source_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[13px] font-medium text-foreground transition-colors duration-200 hover:text-primary"
-                      >
-                        {need.title}
-                      </a>
-                      <p className="mt-0.5 text-[11px] text-muted-foreground">
-                        {need.category}
-                        {need.location ? ` · ${need.location}` : ""}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              )}
+                {compactNeeds.length === 0 ? (
+                  <p className="px-5 py-3.5 text-[13px] text-muted-foreground">
+                    Aucun besoin pour le moment.
+                  </p>
+                ) : (
+                  <ul className="divide-y divide-border">
+                    {compactNeeds.map((need) => (
+                      <li key={need.id} className="px-5 py-3.5">
+                        <a
+                          href={need.source_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[13px] font-medium text-foreground transition-colors duration-200 hover:text-primary"
+                        >
+                          {need.title}
+                        </a>
+                        <p className="mt-0.5 text-[11px] text-muted-foreground">
+                          {need.category}
+                          {need.location ? ` · ${need.location}` : ""}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                )}
 
-              <a
-                href="#besoins"
-                className="flex items-center justify-between border-t border-border px-5 py-3 text-[13px] font-semibold text-foreground transition-colors duration-200 hover:bg-primary-soft"
-              >
-                Tout voir
-                <span aria-hidden="true">→</span>
-              </a>
-            </aside>
+                <a
+                  href="#besoins"
+                  className="flex items-center justify-between border-t border-border px-5 py-3 text-[13px] font-semibold text-foreground transition-colors duration-200 hover:bg-primary-soft"
+                >
+                  Tout voir
+                  <span aria-hidden="true">→</span>
+                </a>
+              </aside>
+            )}
           </div>
 
           {/* Stats bar */}
@@ -477,29 +533,34 @@ export default function HomePage() {
 
         {/* ── Urgence incendies ── */}
         {!loading && urgentNeeds.length > 0 && (
-          <section id="urgence" className="scroll-mt-16 border-t-2 border-red-600 bg-red-50/60">
-            <div className="mx-auto max-w-[1120px] px-5 py-12 sm:py-14">
-              <div className="mb-8">
-                <div className="flex items-center gap-3">
-                  <span className="h-[7px] w-[7px] rounded-[1px] bg-red-600 animate-pulse" />
-                  <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-red-600">
+          <section id="urgence" className="scroll-mt-16 border-t-2 border-red-600">
+            {/* Banner */}
+            <div className="bg-red-600 text-white">
+              <div className="mx-auto max-w-[1120px] px-5 py-8 sm:py-10">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="h-[7px] w-[7px] rounded-[1px] bg-white animate-pulse" />
+                  <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-white/80">
                     Urgence — Incendies Gironde
                   </span>
                 </div>
-                <h2 className="mt-3 text-[28px] font-bold leading-[1.06] tracking-[-0.025em] text-foreground sm:text-[36px]">
+                <h2 className="text-[28px] font-bold leading-[1.06] tracking-[-0.025em] sm:text-[36px]">
                   Mobilisation incendies
                 </h2>
-                <p className="mt-2.5 max-w-[62ch] text-[14.5px] leading-relaxed text-muted-foreground">
+                <p className="mt-2.5 max-w-[62ch] text-[14.5px] leading-relaxed text-white/80">
                   Face aux mégafeux qui ont brûlé 42 000 hectares et évacué 220 000 personnes, des
                   besoins urgents et ciblés émergent. Ne vous rendez pas sur place sans avoir été
                   contacté — passez par les canaux officiels.
                 </p>
-                <p className="mt-2 text-[12px] font-semibold text-red-600">
+                <p className="mt-2 text-[13px] font-semibold text-white">
                   Numéro Vert Solidarité : 0 800 006 090 (appel gratuit)
                 </p>
               </div>
-              <div className="grid gap-px border border-red-200 bg-red-200 sm:grid-cols-2 lg:grid-cols-3">
-                {urgentNeeds.map((need) => {
+            </div>
+
+            {/* Cards */}
+            <div className="mx-auto max-w-[1120px] px-5 py-12 sm:py-14">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {urgentNeeds.map((need, idx) => {
                   const isDon = /don|cagnotte|fondation/i.test(need.title);
                   const tagLabel = isDon ? "Don" : "Bénévole";
                   const tagBg = isDon ? "bg-amber-100" : "bg-red-100";
@@ -510,12 +571,15 @@ export default function HomePage() {
                   return (
                   <div
                     key={need.id}
-                    className="group relative bg-white p-6 transition-colors duration-200 hover:bg-red-50 sm:p-7"
+                    className={`group relative bg-white p-6 transition-colors duration-200 hover:bg-red-50 sm:p-7 ${
+                      idx === 0 ? "sm:col-span-2 border-l-4 border-red-600" : "border border-border rounded-sm"
+                    }`}
                   >
-                    <span
-                      aria-hidden="true"
-                      className="absolute left-0 top-0 h-[2px] w-full origin-left scale-x-0 bg-red-600 transition-transform duration-300 ease-out group-hover:scale-x-100"
-                    />
+                    {idx === 0 && (
+                      <span className="absolute right-4 top-4 text-[10px] font-bold uppercase tracking-[0.14em] text-red-600 bg-red-100 px-2.5 py-1 rounded-sm">
+                        Prioritaire
+                      </span>
+                    )}
                     <div className="flex items-center gap-3 mb-4">
                       <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-red-600 bg-red-100 px-2.5 py-1 rounded-sm">
                         Urgent
@@ -588,7 +652,9 @@ export default function HomePage() {
 
             {/* Loading / Error / Empty / List */}
             {loading ? (
-              <p className="mt-7 text-[14px] text-muted-foreground">Chargement…</p>
+              <div className="mt-8 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+                {[1, 2, 3].map((i) => <SkeletonCard key={i} />)}
+              </div>
             ) : error ? (
               <p className="mt-7 text-[14px] text-red-600">
                 Erreur de chargement : {error}
