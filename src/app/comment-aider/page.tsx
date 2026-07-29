@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Logo } from "@/components/Logo";
 
 export const metadata: Metadata = {
   title: "Comment aider lors des incendies — Guide complet | AideIci",
@@ -162,12 +163,8 @@ export default function CommentAiderPage() {
       {/* ── Navbar ── */}
       <header className="sticky top-0 z-20 border-b border-border bg-background/90 backdrop-blur-[6px]">
         <div className="mx-auto flex max-w-[1120px] items-center justify-between px-5 py-3">
-          <a
-            href="/"
-            className="inline-flex items-center font-bold tracking-[-0.02em] text-foreground text-[17px]"
-          >
-            Aide<span className="text-primary">Ici</span>
-            <span className="ml-[5px] mt-[-8px] h-[5px] w-[5px] rounded-[1px] bg-primary" />
+          <a href="/" className="inline-flex items-center">
+            <Logo />
           </a>
           <div className="flex items-center gap-5">
             <a
@@ -379,9 +376,8 @@ export default function CommentAiderPage() {
         <div className="mx-auto max-w-[1120px] px-5 py-12">
           <div className="grid gap-6 sm:grid-cols-[1fr_auto] sm:items-start">
             <div>
-              <a href="/" className="inline-flex items-center font-bold tracking-[-0.02em] text-foreground text-[15px]">
-                Aide<span className="text-primary">Ici</span>
-                <span className="ml-[5px] mt-[-8px] h-[5px] w-[5px] rounded-[1px] bg-primary" />
+              <a href="/" className="inline-flex items-center">
+                <Logo />
               </a>
               <p className="mt-3 max-w-[38ch] text-[13px] leading-relaxed text-muted-foreground">
                 Radar local des besoins utiles à Bordeaux et en Gironde.

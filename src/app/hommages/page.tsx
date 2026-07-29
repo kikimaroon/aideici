@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Logo } from "@/components/Logo";
+import { HeroAvatar } from "@/components/HeroAvatar";
 
 export const metadata: Metadata = {
   title: "Hommages aux héros des incendies — Gironde 2026 | AideIci",
@@ -143,8 +145,7 @@ export default function HommagesPage() {
             href="/"
             className="inline-flex items-center font-bold tracking-[-0.02em] text-foreground text-[17px]"
           >
-            Aide<span className="text-primary">Ici</span>
-            <span className="ml-[5px] mt-[-8px] h-[5px] w-[5px] rounded-[1px] bg-primary" />
+            <Logo />
           </a>
           <a
             href="/"
@@ -195,19 +196,24 @@ export default function HommagesPage() {
 
           <div className="grid gap-px border border-border bg-border sm:grid-cols-2">
             {FALLEN.map((f) => (
-              <div key={f.name} className="bg-card p-6 sm:p-7">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="h-[7px] w-[7px] rounded-[1px] bg-foreground" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                    {f.date}
-                  </span>
+              <div key={f.name} className="bg-card p-6 sm:p-7 img-warm-overlay">
+                <div className="flex items-start gap-4 mb-2">
+                  <HeroAvatar name={f.name} size={64} />
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="h-[5px] w-[5px] rounded-[1px] bg-foreground" />
+                      <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                        {f.date}
+                      </span>
+                    </div>
+                    <h3 className="text-[20px] font-bold tracking-[-0.018em] text-foreground">
+                      {f.name}
+                    </h3>
+                    <p className="mt-0.5 text-[13px] font-semibold text-muted-foreground">
+                      {f.role} — {f.location}
+                    </p>
+                  </div>
                 </div>
-                <h3 className="text-[20px] font-bold tracking-[-0.018em] text-foreground">
-                  {f.name}
-                </h3>
-                <p className="mt-0.5 text-[13px] font-semibold text-muted-foreground">
-                  {f.role} — {f.location}
-                </p>
                 <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">{f.story}</p>
               </div>
             ))}
@@ -259,11 +265,9 @@ export default function HommagesPage() {
 
           <div className="grid gap-6 sm:grid-cols-2">
             {HEROES.map((h) => (
-              <div key={h.name} className="border border-border bg-card rounded-sm p-6">
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="shrink-0 w-10 h-10 rounded-sm bg-secondary flex items-center justify-center text-[18px]">
-                    ⭐
-                  </div>
+              <div key={h.name} className="img-warm-overlay border border-border bg-card rounded-sm p-6">
+                <div className="flex items-start gap-4 mb-3">
+                  <HeroAvatar name={h.name} size={56} />
                   <div>
                     <h3 className="text-[16px] font-bold text-foreground">{h.name}</h3>
                     <p className="mt-0.5 text-[12px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">
@@ -330,9 +334,8 @@ export default function HommagesPage() {
         <div className="mx-auto max-w-[1120px] px-5 py-12">
           <div className="grid gap-6 sm:grid-cols-[1fr_auto] sm:items-start">
             <div>
-              <a href="/" className="inline-flex items-center font-bold tracking-[-0.02em] text-foreground text-[15px]">
-                Aide<span className="text-primary">Ici</span>
-                <span className="ml-[5px] mt-[-8px] h-[5px] w-[5px] rounded-[1px] bg-primary" />
+              <a href="/" className="inline-flex items-center">
+                <Logo />
               </a>
               <p className="mt-3 max-w-[42ch] text-[13px] leading-relaxed text-muted-foreground">
                 Cette page est un hommage. Pour les aider concrètement, rendez-vous sur{" "}

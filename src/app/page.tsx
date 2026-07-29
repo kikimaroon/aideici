@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { Need } from "@/types";
+import { Logo } from "@/components/Logo";
 
 // ── Zone Combobox ───────────────────────────────────────────────────
 function ZoneCombobox({
@@ -372,10 +373,9 @@ export default function HomePage() {
         <div className="mx-auto grid max-w-[1120px] grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-3 sm:flex sm:justify-between">
           <a
             href="#top"
-            className="inline-flex items-center font-bold tracking-[-0.02em] text-foreground text-[17px]"
+            className="inline-flex items-center tracking-[-0.02em]"
           >
-            Aide<span className="text-primary">Ici</span>
-            <span className="ml-[5px] mt-[-8px] h-[5px] w-[5px] rounded-[1px] bg-primary" />
+            <Logo />
           </a>
           <nav className="hidden items-center gap-7 md:flex">
             {urgentNeeds.length > 0 && (
@@ -872,12 +872,8 @@ export default function HomePage() {
         <div className="mx-auto max-w-[1120px] px-5 py-12">
           <div className="grid gap-6 sm:grid-cols-[1fr_auto] sm:items-start">
             <div>
-              <a
-                href="#top"
-                className="inline-flex items-center font-bold tracking-[-0.02em] text-foreground text-[15px]"
-              >
-                Aide<span className="text-primary">Ici</span>
-                <span className="ml-[5px] mt-[-8px] h-[5px] w-[5px] rounded-[1px] bg-primary" />
+              <a href="#top" className="inline-flex items-center">
+                <Logo />
               </a>
               <address className="mt-3 not-italic max-w-[38ch] text-[13px] leading-relaxed text-muted-foreground">
                 Radar local des besoins utiles à Bordeaux et en Gironde.<br />
