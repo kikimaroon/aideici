@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { Need } from "@/types";
 import { Logo } from "@/components/Logo";
+import { NeedFilter } from "@/components/NeedFilter";
 
 // ── Zone Combobox ───────────────────────────────────────────────────
 function ZoneCombobox({
@@ -279,8 +280,14 @@ function SkeletonSidebar() {
   );
 }
 
+const CAT_EMOJI: Record<string, string> = {
+  Solidarité: "🤝", Animaux: "🐾", Environnement: "🌿", Logistique: "📦",
+  Mentorat: "🧭", Éducation: "📚", Social: "🤝",
+};
+
 // ── Need Card ───────────────────────────────────────────────────────
 function NeedCard({ need }: { need: Need }) {
+  const emoji = CAT_EMOJI[need.category || ""];
   return (
     <div className="group relative border border-border bg-card rounded-sm p-6 transition-colors duration-200 hover:bg-primary-soft/30 sm:p-7">
       <span
@@ -292,6 +299,7 @@ function NeedCard({ need }: { need: Need }) {
         <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-primary bg-primary/10 px-2.5 py-1 rounded-sm">
           Vérifié
         </span>
+        {emoji && <span className="text-[14px]">{emoji}</span>}
         {need.category && (
           <span className="text-[10.5px] font-semibold uppercase tracking-[0.11em] text-muted-foreground">
             {need.category}
@@ -342,6 +350,7 @@ export default function HomePage() {
   const [needs, setNeeds] = useState<Need[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [filteredRegular, setFilteredRegular] = useState<Need[]>([]);
 
   useEffect(() => {
     const today = new Date().toISOString();
@@ -691,6 +700,13 @@ export default function HomePage() {
               </p>
             </div>
 
+            {/* Filter */}
+            {!loading && !error && regularNeeds.length > 0 && (
+              <div className="mt-6">
+                <NeedFilter needs={regularNeeds} onFilter={setFilteredRegular} />
+              </div>
+            )}
+
             {/* Loading / Error / Empty / List */}
             {loading ? (
               <div className="mt-8 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
@@ -704,9 +720,13 @@ export default function HomePage() {
               <p className="mt-7 text-[14px] text-muted-foreground">
                 Aucun besoin vérifié pour le moment. Revenez plus tard dans la journée.
               </p>
+            ) : filteredRegular.length === 0 ? (
+              <p className="mt-7 text-[14px] text-muted-foreground">
+                Aucun besoin ne correspond à votre recherche.
+              </p>
             ) : (
               <div className="mt-8 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
-                {regularNeeds.map((need) => (
+                {filteredRegular.map((need) => (
                   <NeedCard key={need.id} need={need} />
                 ))}
               </div>
