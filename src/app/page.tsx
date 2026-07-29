@@ -167,9 +167,12 @@ function AlertForm() {
             className="mt-2.5 h-[52px] w-full rounded-sm border border-border bg-secondary px-4 text-[15px] text-foreground outline-none transition-colors duration-200 hover:border-foreground/30 focus:border-foreground"
           >
             <option>Social</option>
+            <option>Solidarité locale</option>
+            <option>Animaux</option>
             <option>Environnement</option>
             <option>Logistique</option>
-            <option>Solidarité locale</option>
+            <option>Mentorat</option>
+            <option>Éducation</option>
           </select>
         </div>
 
