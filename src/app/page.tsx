@@ -405,22 +405,22 @@ export default function HomePage() {
               Besoins du jour
             </a>
             <a
-              href="#methode"
+              href="/comment-aider"
+              className="relative py-1 text-[13.5px] font-semibold text-primary transition-colors duration-200 hover:text-primary-hover"
+            >
+              Comment aider
+            </a>
+            <a
+              href="/je-propose"
               className="relative py-1 text-[13.5px] text-muted-foreground transition-colors duration-200 hover:text-foreground"
             >
-              Comment ça marche
+              Je propose
             </a>
             <a
               href="#alertes"
               className="relative py-1 text-[13.5px] text-muted-foreground transition-colors duration-200 hover:text-foreground"
             >
               Alertes
-            </a>
-            <a
-              href="/comment-aider"
-              className="relative py-1 text-[13.5px] text-muted-foreground transition-colors duration-200 hover:text-foreground"
-            >
-              Comment aider
             </a>
             <a
               href="/hommages"
@@ -553,6 +553,22 @@ export default function HomePage() {
               <dd className="mt-1 text-[14.5px] font-semibold tabular-nums tracking-[-0.01em] text-foreground">Bordeaux Métropole</dd>
             </div>
           </dl>
+
+            {/* Map */}
+            <div className="mt-8 border border-border rounded-sm overflow-hidden">
+              <iframe
+                title="Carte des zones touchées par les incendies en Gironde"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=-1.25%2C44.55%2C0.25%2C45.05&amp;layer=mapnik"
+                width="100%"
+                height="280"
+                className="block"
+                loading="lazy"
+              />
+              <div className="bg-card px-4 py-2.5 border-t border-border flex items-center justify-between text-[11px] text-muted-foreground">
+                <span>Zones touchées — Gironde, Landes · Bordeaux Métropole</span>
+                <a href="https://www.openstreetmap.org/#map=10/44.80/-0.50" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary transition-colors">Agrandir la carte</a>
+              </div>
+            </div>
 
             {/* Trust indicators */}
             <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-[12px] text-muted-foreground">
@@ -908,19 +924,19 @@ export default function HomePage() {
             </div>
             <nav className="flex flex-col gap-2 sm:items-end">
               <a
-                href="#top"
+                href="/mentions-legales"
                 className="w-fit text-[13px] font-medium text-muted-foreground decoration-primary decoration-2 underline-offset-4 transition-colors duration-200 hover:text-foreground hover:underline"
               >
                 Mentions légales
               </a>
               <a
-                href="#top"
+                href="/politique-confidentialite"
                 className="w-fit text-[13px] font-medium text-muted-foreground decoration-primary decoration-2 underline-offset-4 transition-colors duration-200 hover:text-foreground hover:underline"
               >
                 Politique de confidentialité
               </a>
               <a
-                href="#top"
+                href="mailto:contact@aideici.fr"
                 className="w-fit text-[13px] font-medium text-muted-foreground decoration-primary decoration-2 underline-offset-4 transition-colors duration-200 hover:text-foreground hover:underline"
               >
                 Contact
