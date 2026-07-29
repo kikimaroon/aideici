@@ -499,7 +499,15 @@ export default function HomePage() {
                 </p>
               </div>
               <div className="grid gap-px border border-red-200 bg-red-200 sm:grid-cols-2 lg:grid-cols-3">
-                {urgentNeeds.map((need) => (
+                {urgentNeeds.map((need) => {
+                  const isDon = /don|cagnotte|fondation/i.test(need.title);
+                  const tagLabel = isDon ? "Don" : "Bénévole";
+                  const tagBg = isDon ? "bg-amber-100" : "bg-red-100";
+                  const tagText = isDon ? "text-amber-700" : "text-red-600";
+                  const btnBg = isDon ? "bg-amber-600 hover:bg-amber-700" : "bg-red-600 hover:bg-red-700";
+                  const btnLabel = isDon ? "Faire un don" : "Agir maintenant";
+
+                  return (
                   <div
                     key={need.id}
                     className="group relative bg-white p-6 transition-colors duration-200 hover:bg-red-50 sm:p-7"
@@ -511,6 +519,9 @@ export default function HomePage() {
                     <div className="flex items-center gap-3 mb-4">
                       <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-red-600 bg-red-100 px-2.5 py-1 rounded-sm">
                         Urgent
+                      </span>
+                      <span className={`text-[10px] font-bold uppercase tracking-[0.14em] ${tagText} ${tagBg} px-2.5 py-1 rounded-sm`}>
+                        {tagLabel}
                       </span>
                       {need.category && (
                         <span className="text-[10.5px] font-semibold uppercase tracking-[0.11em] text-muted-foreground">
@@ -538,12 +549,13 @@ export default function HomePage() {
                       href={need.source_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-4 inline-flex items-center gap-2 rounded-sm bg-red-600 px-4 py-2 text-[13px] font-semibold text-white transition-colors duration-200 hover:bg-red-700"
+                      className={`mt-4 inline-flex items-center gap-2 rounded-sm px-4 py-2 text-[13px] font-semibold text-white transition-colors duration-200 ${btnBg}`}
                     >
-                      Agir maintenant
+                      {btnLabel}
                     </a>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </section>
