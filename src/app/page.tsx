@@ -4,6 +4,79 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { Need } from "@/types";
 
+// ── Zone Combobox ───────────────────────────────────────────────────
+function ZoneCombobox({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  const [zones, setZones] = useState<string[]>([]);
+  const [open, setOpen] = useState(false);
+  const [filter, setFilter] = useState(value);
+
+  useEffect(() => {
+    supabase
+      .from("needs")
+      .select("location")
+      .eq("status", "verified")
+      .gte("expires_at", new Date().toISOString())
+      .then(({ data }) => {
+        if (data) {
+          const unique = [...new Set(data.map((n: { location: string }) => n.location).filter(Boolean))].sort();
+          setZones(unique);
+        }
+      });
+  }, []);
+
+  const filtered = zones.filter((z) =>
+    z.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  return (
+    <div className="relative">
+      <input
+        id="zone"
+        type="text"
+        required
+        placeholder="Rechercher une ville ou un code postal"
+        value={filter}
+        onChange={(e) => {
+          setFilter(e.target.value);
+          onChange(e.target.value);
+          setOpen(true);
+        }}
+        onFocus={() => setOpen(true)}
+        onBlur={() => setTimeout(() => setOpen(false), 200)}
+        autoComplete="off"
+        className="mt-2.5 h-[52px] w-full rounded-sm border border-border bg-secondary px-4 text-[15px] text-foreground outline-none transition-colors duration-200 placeholder:text-muted-foreground/70 hover:border-foreground/30 focus:border-foreground"
+      />
+
+      {open && filter.length >= 1 && filtered.length > 0 && (
+        <ul className="absolute left-0 right-0 top-full z-30 mt-1 max-h-[200px] overflow-y-auto rounded-sm border border-border bg-card shadow-lg">
+          {filtered.map((z) => (
+            <li key={z}>
+              <button
+                type="button"
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  setFilter(z);
+                  onChange(z);
+                  setOpen(false);
+                }}
+                className="w-full px-4 py-2.5 text-left text-[14px] text-foreground transition-colors duration-100 hover:bg-primary-soft hover:text-primary"
+              >
+                {z}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 // ── Alert Form ─────────────────────────────────────────────────────
 function AlertForm() {
   const [email, setEmail] = useState("");
@@ -27,7 +100,7 @@ function AlertForm() {
     if (error) {
       setMessage("Erreur : " + error.message);
     } else {
-      setMessage("Inscription confirmée !");
+      setMessage("Inscription confirmée ! Vérifiez votre boîte mail.");
       setEmail("");
       setZone("");
       setCategory("Social");
@@ -76,15 +149,7 @@ function AlertForm() {
           >
             Zone / ville
           </label>
-          <input
-            id="zone"
-            type="text"
-            required
-            placeholder="Bordeaux"
-            value={zone}
-            onChange={(e) => setZone(e.target.value)}
-            className="mt-2.5 h-[52px] w-full rounded-sm border border-border bg-secondary px-4 text-[15px] text-foreground outline-none transition-colors duration-200 placeholder:text-muted-foreground/70 hover:border-foreground/30 focus:border-foreground"
-          />
+          <ZoneCombobox value={zone} onChange={setZone} />
         </div>
 
         <div className="sm:col-span-2">
