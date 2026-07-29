@@ -103,22 +103,6 @@
     100% { background-position: -200% 0; }
   }
 
-  /* Leaflet map tooltip */
-  .map-tooltip {
-    font-family: "Inter", sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    background: var(--foreground);
-    color: var(--background);
-    border: none;
-    border-radius: 2px;
-    padding: 4px 10px;
-    box-shadow: none;
-  }
-
-  .leaflet-container {
-    background: var(--secondary) !important;
-  }
 
   /* Scroll reveal */
   .reveal {
