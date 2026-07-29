@@ -529,7 +529,27 @@ export default function HomePage() {
               <dd className="mt-1 text-[14.5px] font-semibold tabular-nums tracking-[-0.01em] text-foreground">Bordeaux Métropole</dd>
             </div>
           </dl>
-        </section>
+
+            {/* Trust indicators */}
+            <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-[12px] text-muted-foreground">
+              <span className="flex items-center gap-1.5">
+                <span className="h-[5px] w-[5px] rounded-[1px] bg-green-600" />
+                Tous les besoins sont vérifiés manuellement
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="h-[5px] w-[5px] rounded-[1px] bg-green-600" />
+                Sources officielles uniquement
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="h-[5px] w-[5px] rounded-[1px] bg-green-600" />
+                Dernière vérification : aujourd&apos;hui
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="h-[5px] w-[5px] rounded-[1px] bg-green-600" />
+                {regularNeeds.length + urgentNeeds.length} besoins actifs
+              </span>
+            </div>
+          </section>
 
         {/* ── Urgence incendies ── */}
         {!loading && urgentNeeds.length > 0 && (
@@ -841,8 +861,12 @@ export default function HomePage() {
                 Aide<span className="text-primary">Ici</span>
                 <span className="ml-[5px] mt-[-8px] h-[5px] w-[5px] rounded-[1px] bg-primary" />
               </a>
-              <p className="mt-3 max-w-[38ch] text-[13px] leading-relaxed text-muted-foreground">
-                Radar local des besoins utiles. Zone pilote : Bordeaux Métropole.
+              <address className="mt-3 not-italic max-w-[38ch] text-[13px] leading-relaxed text-muted-foreground">
+                Radar local des besoins utiles à Bordeaux et en Gironde.<br />
+                Trouvez où être bénévole près de chez vous.
+              </address>
+              <p className="mt-1 text-[11px] text-muted-foreground">
+                <span>Bordeaux</span> · <span>Gironde (33)</span> · <span>Nouvelle-Aquitaine</span>
               </p>
             </div>
             <nav className="flex flex-col gap-2 sm:items-end">
