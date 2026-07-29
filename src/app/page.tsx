@@ -404,6 +404,12 @@ export default function HomePage() {
             >
               Alertes
             </a>
+            <a
+              href="/comment-aider"
+              className="relative py-1 text-[13.5px] text-muted-foreground transition-colors duration-200 hover:text-foreground"
+            >
+              Comment aider
+            </a>
           </nav>
           <a
             href="#alertes"
@@ -574,6 +580,12 @@ export default function HomePage() {
                 <p className="mt-2 text-[13px] font-semibold text-white">
                   Numéro Vert Solidarité : 0 800 006 090 (appel gratuit)
                 </p>
+                <a
+                  href="/comment-aider"
+                  className="mt-4 inline-flex items-center gap-2 rounded-sm bg-white/15 px-4 py-2 text-[13px] font-semibold text-white transition-colors hover:bg-white/25"
+                >
+                  Guide : comment aider concrètement →
+                </a>
               </div>
             </div>
 
