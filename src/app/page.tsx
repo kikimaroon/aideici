@@ -540,8 +540,7 @@ export default function HomePage() {
                       rel="noopener noreferrer"
                       className="mt-4 inline-flex items-center gap-2 rounded-sm bg-red-600 px-4 py-2 text-[13px] font-semibold text-white transition-colors duration-200 hover:bg-red-700"
                     >
-                      Voir la source
-                      <span aria-hidden="true">→</span>
+                      Agir maintenant
                     </a>
                   </div>
                 ))}
