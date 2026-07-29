@@ -214,12 +214,6 @@ function NeedCard({ need }: { need: Need }) {
 }
 
 // ── Main Page ──────────────────────────────────────────────────────
-const STATS = [
-  { label: "Mise à jour", value: "Aujourd'hui, 15:30" },
-  { label: "Besoins actifs", key: "needs" as const },
-  { label: "Sources vérifiées", value: "3" },
-  { label: "Zone pilote", value: "Bordeaux Métropole" },
-];
 
 export default function HomePage() {
   const [needs, setNeeds] = useState<Need[]>([]);
@@ -234,7 +228,7 @@ export default function HomePage() {
       .eq("status", "verified")
       .gte("expires_at", today)
       .order("verified_at", { ascending: false })
-      .limit(20)
+      .limit(50)
       .then(({ data, error: err }) => {
         if (err) {
           console.error("Supabase fetch error:", err);
@@ -246,7 +240,9 @@ export default function HomePage() {
       });
   }, []);
 
-  const compactNeeds = needs.slice(0, 3);
+  const urgentNeeds = needs.filter((n) => n.title.toUpperCase().startsWith("URGENT"));
+  const regularNeeds = needs.filter((n) => !n.title.toUpperCase().startsWith("URGENT"));
+  const compactNeeds = regularNeeds.slice(0, 3);
 
   return (
     <div id="top" className="min-h-screen bg-background">
@@ -261,6 +257,14 @@ export default function HomePage() {
             <span className="ml-[5px] mt-[-8px] h-[5px] w-[5px] rounded-[1px] bg-primary" />
           </a>
           <nav className="hidden items-center gap-7 md:flex">
+            {urgentNeeds.length > 0 && (
+              <a
+                href="#urgence"
+                className="relative py-1 text-[13.5px] font-semibold text-red-600 transition-colors duration-200 hover:text-red-700"
+              >
+                Urgence incendies
+              </a>
+            )}
             <a
               href="#besoins"
               className="relative py-1 text-[13.5px] text-muted-foreground transition-colors duration-200 hover:text-foreground"
@@ -382,19 +386,104 @@ export default function HomePage() {
           </div>
 
           {/* Stats bar */}
-          <dl className="mt-10 grid grid-cols-2 gap-px border border-border bg-border sm:grid-cols-4">
-            {STATS.map((s) => (
-              <div key={s.label} className="bg-card px-4 py-3.5">
-                <dt className="text-[10.5px] font-semibold uppercase tracking-[0.13em] text-muted-foreground">
-                  {s.label}
-                </dt>
-                <dd className="mt-1 text-[14.5px] font-semibold tabular-nums tracking-[-0.01em] text-foreground">
-                  {s.key === "needs" ? needs.length : s.value}
-                </dd>
-              </div>
-            ))}
+          <dl className="mt-10 grid grid-cols-2 gap-px border border-border bg-border sm:grid-cols-5">
+            <div className="bg-card px-4 py-3.5">
+              <dt className="text-[10.5px] font-semibold uppercase tracking-[0.13em] text-muted-foreground">Mise à jour</dt>
+              <dd className="mt-1 text-[14.5px] font-semibold tabular-nums tracking-[-0.01em] text-foreground">Aujourd&apos;hui</dd>
+            </div>
+            <div className="bg-card px-4 py-3.5">
+              <dt className="text-[10.5px] font-semibold uppercase tracking-[0.13em] text-muted-foreground">Besoins actifs</dt>
+              <dd className="mt-1 text-[14.5px] font-semibold tabular-nums tracking-[-0.01em] text-foreground">{regularNeeds.length}</dd>
+            </div>
+            <div className="bg-card px-4 py-3.5">
+              <dt className="text-[10.5px] font-semibold uppercase tracking-[0.13em] text-red-600">Urgences</dt>
+              <dd className="mt-1 text-[14.5px] font-semibold tabular-nums tracking-[-0.01em] text-red-600">{urgentNeeds.length}</dd>
+            </div>
+            <div className="bg-card px-4 py-3.5">
+              <dt className="text-[10.5px] font-semibold uppercase tracking-[0.13em] text-muted-foreground">Sources vérifiées</dt>
+              <dd className="mt-1 text-[14.5px] font-semibold tabular-nums tracking-[-0.01em] text-foreground">3</dd>
+            </div>
+            <div className="bg-card px-4 py-3.5">
+              <dt className="text-[10.5px] font-semibold uppercase tracking-[0.13em] text-muted-foreground">Zone pilote</dt>
+              <dd className="mt-1 text-[14.5px] font-semibold tabular-nums tracking-[-0.01em] text-foreground">Bordeaux Métropole</dd>
+            </div>
           </dl>
         </section>
+
+        {/* ── Urgence incendies ── */}
+        {!loading && urgentNeeds.length > 0 && (
+          <section id="urgence" className="scroll-mt-16 border-t-2 border-red-600 bg-red-50/60">
+            <div className="mx-auto max-w-[1120px] px-5 py-12 sm:py-14">
+              <div className="mb-8">
+                <div className="flex items-center gap-3">
+                  <span className="h-[7px] w-[7px] rounded-[1px] bg-red-600 animate-pulse" />
+                  <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-red-600">
+                    Urgence — Incendies Gironde
+                  </span>
+                </div>
+                <h2 className="mt-3 text-[28px] font-bold leading-[1.06] tracking-[-0.025em] text-foreground sm:text-[36px]">
+                  Mobilisation incendies
+                </h2>
+                <p className="mt-2.5 max-w-[62ch] text-[14.5px] leading-relaxed text-muted-foreground">
+                  Face aux mégafeux qui ont brûlé 42 000 hectares et évacué 220 000 personnes, des
+                  besoins urgents et ciblés émergent. Ne vous rendez pas sur place sans avoir été
+                  contacté — passez par les canaux officiels.
+                </p>
+                <p className="mt-2 text-[12px] font-semibold text-red-600">
+                  Numéro Vert Solidarité : 0 800 006 090 (appel gratuit)
+                </p>
+              </div>
+              <div className="grid gap-px border border-red-200 bg-red-200 sm:grid-cols-2 lg:grid-cols-3">
+                {urgentNeeds.map((need) => (
+                  <div
+                    key={need.id}
+                    className="group relative bg-white p-6 transition-colors duration-200 hover:bg-red-50 sm:p-7"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="absolute left-0 top-0 h-[2px] w-full origin-left scale-x-0 bg-red-600 transition-transform duration-300 ease-out group-hover:scale-x-100"
+                    />
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-red-600 bg-red-100 px-2.5 py-1 rounded-sm">
+                        Urgent
+                      </span>
+                      {need.category && (
+                        <span className="text-[10.5px] font-semibold uppercase tracking-[0.11em] text-muted-foreground">
+                          {need.category}
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="text-[18px] font-bold leading-[1.2] tracking-[-0.018em] text-foreground">
+                      {need.title.replace(/^URGENT\s*[—–-]\s*/i, "")}
+                    </h3>
+                    {need.summary && (
+                      <p className="mt-2.5 text-[14px] leading-relaxed text-muted-foreground">
+                        {need.summary}
+                      </p>
+                    )}
+                    <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-[12px] text-muted-foreground">
+                      {need.location && <span>{need.location}</span>}
+                      {need.expires_at && (
+                        <span>
+                          · Expire le {new Date(need.expires_at).toLocaleDateString("fr-FR")}
+                        </span>
+                      )}
+                    </div>
+                    <a
+                      href={need.source_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-4 inline-flex items-center gap-2 rounded-sm bg-red-600 px-4 py-2 text-[13px] font-semibold text-white transition-colors duration-200 hover:bg-red-700"
+                    >
+                      Voir la source
+                      <span aria-hidden="true">→</span>
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* ── Besoins du jour ── */}
         <section id="besoins" className="scroll-mt-16 border-t border-border">
@@ -428,13 +517,13 @@ export default function HomePage() {
               <p className="mt-7 text-[14px] text-red-600">
                 Erreur de chargement : {error}
               </p>
-            ) : needs.length === 0 ? (
+            ) : regularNeeds.length === 0 ? (
               <p className="mt-7 text-[14px] text-muted-foreground">
                 Aucun besoin vérifié pour le moment. Revenez plus tard dans la journée.
               </p>
             ) : (
               <div className="mt-8 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
-                {needs.map((need) => (
+                {regularNeeds.map((need) => (
                   <NeedCard key={need.id} need={need} />
                 ))}
               </div>
