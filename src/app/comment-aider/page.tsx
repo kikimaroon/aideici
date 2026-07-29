@@ -169,12 +169,20 @@ export default function CommentAiderPage() {
             Aide<span className="text-primary">Ici</span>
             <span className="ml-[5px] mt-[-8px] h-[5px] w-[5px] rounded-[1px] bg-primary" />
           </a>
-          <a
-            href="/"
-            className="text-[13.5px] text-muted-foreground transition-colors hover:text-foreground"
-          >
-            ← Retour au radar
-          </a>
+          <div className="flex items-center gap-5">
+            <a
+              href="/hommages"
+              className="text-[13.5px] text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Hommages
+            </a>
+            <a
+              href="/"
+              className="text-[13.5px] text-muted-foreground transition-colors hover:text-foreground"
+            >
+              ← Retour au radar
+            </a>
+          </div>
         </div>
       </header>
 

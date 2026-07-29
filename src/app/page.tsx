@@ -410,6 +410,12 @@ export default function HomePage() {
             >
               Comment aider
             </a>
+            <a
+              href="/hommages"
+              className="relative py-1 text-[13.5px] text-muted-foreground transition-colors duration-200 hover:text-foreground"
+            >
+              Hommages
+            </a>
           </nav>
           <a
             href="#alertes"
