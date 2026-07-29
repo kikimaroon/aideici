@@ -5,6 +5,8 @@ import { supabase } from "@/lib/supabaseClient";
 import { Need } from "@/types";
 import { Logo } from "@/components/Logo";
 import { NeedFilter } from "@/components/NeedFilter";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { ZoneMap } from "@/components/ZoneMap";
 
 // ── Zone Combobox ───────────────────────────────────────────────────
 function ZoneCombobox({
@@ -429,12 +431,15 @@ export default function HomePage() {
               Hommages
             </a>
           </nav>
-          <a
-            href="#alertes"
-            className="inline-flex h-9 shrink-0 items-center justify-center rounded-sm border border-foreground bg-secondary px-3.5 text-[13px] font-semibold text-foreground transition-colors duration-200 hover:bg-foreground hover:text-background"
-          >
-            Recevoir les alertes
-          </a>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <a
+              href="#alertes"
+              className="inline-flex h-9 shrink-0 items-center justify-center rounded-sm border border-foreground bg-secondary px-3.5 text-[13px] font-semibold text-foreground transition-colors duration-200 hover:bg-foreground hover:text-background"
+            >
+              Recevoir les alertes
+            </a>
+          </div>
         </div>
       </header>
 
@@ -555,19 +560,8 @@ export default function HomePage() {
           </dl>
 
             {/* Map */}
-            <div className="mt-8 border border-border rounded-sm overflow-hidden">
-              <iframe
-                title="Carte des zones touchées par les incendies en Gironde"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=-1.25%2C44.55%2C0.25%2C45.05&amp;layer=mapnik"
-                width="100%"
-                height="280"
-                className="block"
-                loading="lazy"
-              />
-              <div className="bg-card px-4 py-2.5 border-t border-border flex items-center justify-between text-[11px] text-muted-foreground">
-                <span>Zones touchées — Gironde, Landes · Bordeaux Métropole</span>
-                <a href="https://www.openstreetmap.org/#map=10/44.80/-0.50" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary transition-colors">Agrandir la carte</a>
-              </div>
+            <div className="mt-8">
+              <ZoneMap />
             </div>
 
             {/* Trust indicators */}

@@ -2,25 +2,26 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: ["./src/**/*.{ts,tsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
-        background: "#fafaf8",
-        foreground: "#1a1a18",
+        background: "var(--background)",
+        foreground: "var(--foreground)",
         primary: {
-          DEFAULT: "#e85d3a",
-          hover: "#d14a2a",
-          foreground: "#ffffff",
-          soft: "rgba(232, 93, 58, 0.06)",
+          DEFAULT: "var(--primary)",
+          hover: "var(--primary-hover)",
+          foreground: "var(--primary-foreground)",
+          soft: "var(--primary-soft)",
         },
-        secondary: "#f3f3f0",
+        secondary: "var(--secondary)",
         muted: {
-          DEFAULT: "#f3f3f0",
-          foreground: "#6b6b68",
+          DEFAULT: "var(--muted)",
+          foreground: "var(--muted-foreground)",
         },
-        card: "#ffffff",
-        border: "#e0e0dc",
-        surface: "#ffffff",
+        card: "var(--card)",
+        border: "var(--border)",
+        surface: "var(--surface)",
       },
     },
   },
